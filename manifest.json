@@ -1,14 +1,14 @@
 {
-    "name": "something random",
+    "name": "Backgroundify",
     "description": "Build an Extension!",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "manifest_version": 3,
     "background": {
         "service_worker": "background.js"
     },
     "permissions": ["storage", "activeTab", "scripting"],
     "action": {
-        "default_popup": "index.html"
+        "default_popup": "popup.html"
     },
     "icons": {
         "16": "images/smRick.png",

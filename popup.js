@@ -1,5 +1,6 @@
 
 let button = document.getElementById("button");
+let submitButton = document.getElementById("submit");
 
 chrome.storage.sync.get("color", ({ badMorty }) => {
   button.style.backgroundImage = "url('https://cdn.iconscout.com/icon/premium/png-256-thumb/rick-sanchez-1-563922.png')";
@@ -9,20 +10,18 @@ chrome.storage.sync.get("color", ({ badMorty }) => {
 
 
 button.addEventListener("click", async () => {
+
     let [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
     chrome.scripting.executeScript({
       target: { tabId: tab.id },
-      function: setPageBackgroundColor,
+      function: setPageBackground,
     });
   });
   
   
-  function setPageBackgroundColor() {
+function setPageBackground() {
     chrome.storage.sync.get("color", ({ badMorty }) => {
-
-        let snd = new Audio("images/OOH WEE - AUDIO FROM JAYUZUMI.COM.mp3"); 
-        snd.play();
-
+        
         const random = Math.floor(Math.random() * 10);
         console.log(random);
         if (random === 0) {
@@ -41,7 +40,7 @@ button.addEventListener("click", async () => {
             document.body.style.backgroundImage = "url('https://mocah.org/thumbs/4553765-rick-sanchez-morty-smith-rick-and-morty.png')";
         }
         if (random === 5) {
-            document.body.style.backgroundImage = "url('https://c4.wallpaperflare.com/wallpaper/588/5/300/rick-and-morty-toilets-hd-wallpaper-preview.jpg')";
+            document.body.style.backgroundImage = "url('https://c.tenor.com/HpqhNDMM_FIAAAAC/rick-and-morty-aesthetic.gif')";
         }
         if (random === 6) {
             document.body.style.backgroundImage = "url('https://c4.wallpaperflare.com/wallpaper/851/626/521/rick-and-morty-rick-sanchez-morty-smith-beth-smith-wallpaper-preview.jpg')";
@@ -57,7 +56,26 @@ button.addEventListener("click", async () => {
         }
 
         document.body.style.backgroundSize = "100%";
-        document.body.style.color = "white";
-        document.div.style.color = "white";
+        document.body.style.color = random === 5 || random === 6 ? "black" : "white";
     });
+}
+
+submitButton.addEventListener('click', async evt => {
+    evt.preventDefault(); // prevents `submit` event from reloading the popup
+    const [tab] = await chrome.tabs.query({active: true, currentWindow: true});
+    await chrome.scripting.executeScript({
+      target: {tabId: tab.id},
+      function: setPageListener,
+    });
+    const text = document.getElementById('summary').value;
+    chrome.tabs.sendMessage(tab.id, {id: 'demo', text}); 
+  });
+  
+  function setPageListener() {
+    chrome.runtime.onMessage.addListener(function onMessage(msg) {
+      document.body.style.backgroundImage = "url(" + msg.text + ")";
+      document.body.style.backgroundSize = "100%";
+      document.body.style.color = "white";
+    }); //loop thru divs for text
   }
+
