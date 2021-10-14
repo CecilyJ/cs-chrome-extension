@@ -1,0 +1,19 @@
+{
+    "name": "something random",
+    "description": "Build an Extension!",
+    "version": "1.0.1",
+    "manifest_version": 3,
+    "background": {
+        "service_worker": "background.js"
+    },
+    "permissions": ["storage", "activeTab", "scripting"],
+    "action": {
+        "default_popup": "index.html"
+    },
+    "icons": {
+        "16": "images/smRick.png",
+        "32": "images/smRick.png",
+        "48": "images/smRick.png",
+        "128": "images/smRick.png"
+    }
+}
